@@ -3,13 +3,24 @@
 const geocode = require('./utils/geocode.js');
 const forecast = require('./utils/forecast.js');
 
+if (process.argv[2] === undefined) {
+    return console.log('Please provide a location.');
+}
 
-geocode('Amritsar', (error, data) => {
-    console.log('Error', error);
-    console.log('Data', data);
+geocode(process.argv[2], (error, geocodeData) => {
+
+    if (error) {
+        return console.log(error);
+    }
+
+    forecast(geocodeData.latitude, geocodeData.longitude, (error, forecastData) => {
+    
+        if (error) {
+            return console.log(error);
+        }
+
+        console.log(geocodeData.location);
+        console.log(forecastData);
+    });
 });
 
-forecast(31.3260, 75.5762, (error, data) => {
-    console.log('Error', error)
-    console.log('Data', data)
-});
