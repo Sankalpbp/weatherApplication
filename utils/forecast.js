@@ -6,15 +6,15 @@ const forecast = (latitude, longitude, callback) => {
 
     const url = 'http://api.weatherstack.com/current?access_key=1033c76d0c1530af36960575ab2b03a8&query=' + latitude + ',' + longitude + '&units=m';
 
-    request({ url: url, json: true}, (error, response) => {
+    request({ url, json: true}, (error, { body } = {}) => {
 
         if (error) {
             callback('Unable to connect to the weather services!', undefined);
-        } else if (response.body.error){
+        } else if (body.error){
             callback('Unable to find location.', undefined);
         } else {
             callback(undefined, 
-                response.body.current.weather_descriptions[0] + '. It is ' + response.body.current.temperature + ' degrees outside and it feels like ' + response.body.current.feelslike);
+                body.current.weather_descriptions[0] + '. It is ' + body.current.temperature + ' degrees outside and it feels like ' + body.current.feelslike);
         }
     });
 };
